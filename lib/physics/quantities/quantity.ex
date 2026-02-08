@@ -9,14 +9,14 @@ defmodule Physics.Quantities.Quantity do
     field :vector, :string
     field :unit, :string
     field :section, :string
-
+    field :symbol, :string
     timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(quantity, attrs) do
     quantity
-    |> cast(attrs, [:name, :formula, :descr, :vector, :unit, :section])
-    |> validate_required([:name, :formula, :descr, :vector, :unit, :section])
+    |> cast(attrs, [:name, :formula, :descr, :vector, :unit, :section, :symbol])
+    |> validate_required([:name, :formula, :descr, :vector, :unit, :section, :symbol])
   end
 end

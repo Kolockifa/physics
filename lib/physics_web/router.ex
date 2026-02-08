@@ -17,9 +17,9 @@ defmodule PhysicsWeb.Router do
   scope "/", PhysicsWeb do
     pipe_through :browser
     live "/", QuantityLive.Index, :index
-    #live "/quantities/new", QuantityLive.Form, :new
-    #live "/quantities/:id", QuantityLive.Show, :show
-    #live "/quantities/:id/edit", QuantityLive.Form, :edit
+    live "/quantities/new", QuantityLive.Form, :new
+    live "/quantities/:id", QuantityLive.Show, :show
+    live "/quantities/:id/edit", QuantityLive.Form, :edit
   end
 
   # Other scopes may use custom stacks.

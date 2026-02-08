@@ -8,26 +8,22 @@ defmodule PhysicsWeb.QuantityLive.Show do
     ~H"""
     <Layouts.app flash={@flash}>
       <.header>
-        Quantity {@quantity.id}
-        <:subtitle>This is a quantity record from your database.</:subtitle>
+        {@quantity.name}
+        <:subtitle>{@quantity.section}</:subtitle>
         <:actions>
-          <.button navigate={~p"/quantities"}>
-            <.icon name="hero-arrow-left" />
-          </.button>
-          <.button variant="primary" navigate={~p"/quantities/#{@quantity}/edit?return_to=show"}>
-            <.icon name="hero-pencil-square" /> Edit quantity
+          <.button navigate={~p"/"}>
+            <.icon name="hero-arrow-left" /> Вернуться к каталогу
           </.button>
         </:actions>
       </.header>
 
       <.list>
-        <:item title="Name">{@quantity.name}</:item>
-        <:item title="Formula">{@quantity.formula}</:item>
-        <:item title="Descr">{@quantity.descr}</:item>
-        <:item title="Vector">{@quantity.vector}</:item>
-        <:item title="Unit">{@quantity.unit}</:item>
-        <:item title="Section">{@quantity.section}</:item>
+        <:item title="Формула"><%= raw @quantity.formula %></:item>
+        <:item title="Определение">{@quantity.descr}</:item>
+        <:item title="Единица измерения"><%= raw @quantity.unit %></:item>
+        <:item title="">✓ {@quantity.vector}</:item>
       </.list>
+
     </Layouts.app>
     """
   end

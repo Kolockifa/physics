@@ -15,11 +15,12 @@ defmodule PhysicsWeb.QuantityLive.Form do
 
       <.form for={@form} id="quantity-form" phx-change="validate" phx-submit="save">
         <.input field={@form[:name]} type="text" label="Name" />
-        <.input field={@form[:formula]} type="text" label="Formula" />
+        <.input field={@form[:formula]} type="textarea" label="Formula" />
         <.input field={@form[:descr]} type="text" label="Descr" />
         <.input field={@form[:vector]} type="text" label="Vector" />
         <.input field={@form[:unit]} type="text" label="Unit" />
         <.input field={@form[:section]} type="text" label="Section" />
+        <.input field={@form[:symbol]} type="text" label="Symbol" />
         <footer>
           <.button phx-disable-with="Saving..." variant="primary">Save Quantity</.button>
           <.button navigate={return_path(@return_to, @quantity)}>Cancel</.button>
@@ -94,6 +95,6 @@ defmodule PhysicsWeb.QuantityLive.Form do
     end
   end
 
-  defp return_path("index", _quantity), do: ~p"/quantities"
+  defp return_path("index", _quantity), do: ~p"/"
   defp return_path("show", quantity), do: ~p"/quantities/#{quantity}"
 end

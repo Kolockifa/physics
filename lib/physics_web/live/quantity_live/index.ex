@@ -8,7 +8,10 @@ defmodule PhysicsWeb.QuantityLive.Index do
     ~H"""
     <Layouts.app flash={@flash}>
       <.header>
-        Справочник физичесих величин
+        <.form for={@searchform} id="search-form" phx-submit="search">
+          <p><.input field={@searchform[:search]} name="search" type="text" label="Поиск величин" value=""/>
+          <.button phx-disable-with="Ищем..." variant="primary">Найти</.button></p>
+        </.form>
       </.header>
 
       <.table
@@ -17,11 +20,9 @@ defmodule PhysicsWeb.QuantityLive.Index do
         row_click={fn {_id, quantity} -> JS.navigate(~p"/quantities/#{quantity}") end}
       >
         <:col :let={{_id, quantity}} label="Название">{quantity.name}</:col>
-        <:col :let={{_id, quantity}} label="Formula">{quantity.formula}</:col>
-        <:col :let={{_id, quantity}} label="Descr">{quantity.descr}</:col>
-        <:col :let={{_id, quantity}} label="Vector">{quantity.vector}</:col>
-        <:col :let={{_id, quantity}} label="Unit">{quantity.unit}</:col>
-        <:col :let={{_id, quantity}} label="Section">{quantity.section}</:col>
+        <:col :let={{_id, quantity}} label="Обозначение">{quantity.symbol}</:col>
+        <:col :let={{_id, quantity}} label="Единица измерения (СИ)"><%= raw quantity.unit %></:col>
+        <:col :let={{_id, quantity}} label="Раздел физики">{quantity.section}</:col>
       </.table>
     </Layouts.app>
     """
@@ -32,6 +33,7 @@ defmodule PhysicsWeb.QuantityLive.Index do
     {:ok,
      socket
      |> assign(:page_title, "Listing Quantities")
+     |> assign(:searchform, %{"search" => ""})
      |> stream(:quantities, list_quantities())}
   end
 
@@ -42,6 +44,15 @@ defmodule PhysicsWeb.QuantityLive.Index do
 
     {:noreply, stream_delete(socket, :quantities, quantity)}
   end
+
+  def handle_event("search", %{"search" => search}, socket) do
+    filtr = case search do
+      "" -> list_quantities()
+      _ -> Enum.filter(list_quantities(), fn quantity -> String.jaro_distance(search, quantity.name) > 0.6 end)
+    end
+    {:noreply, stream(socket, :quantities, filtr, reset: true)}
+  end
+
 
   defp list_quantities() do
     Quantities.list_quantities()
